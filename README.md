@@ -16,3 +16,11 @@ The data used for this project comes from [NHL API](api-web.nhle.com).
 The application uses a simple **Random Forest Model** to predict the score based on various input features.
 
 Using this model, the app can provide a Sharks vs opponent score based on the inputs.
+
+
+
+###
+```shell
+$env:PYTHONPATH="C:\Users\jlwis\PycharmProjects\airbnb"
+streamlit run .\dashboard\dashboard.py 
+```
