@@ -1,5 +1,5 @@
 import streamlit as st
-from app import fetch_data
+from commons import fetch_data
 from charts import wins_losses_chart, histograms, top_5_charts
 
 

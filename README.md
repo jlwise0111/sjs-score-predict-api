@@ -21,6 +21,5 @@ Using this model, the app can provide a Sharks vs opponent score based on the in
 
 ###
 ```shell
-$env:PYTHONPATH="C:\Users\jlwis\PycharmProjects\airbnb"
 streamlit run .\dashboard\dashboard.py 
 ```
