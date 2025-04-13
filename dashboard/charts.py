@@ -37,15 +37,17 @@ def histograms(data):
 
 def top_5_charts(data, option):
     st.header("Top 5 games by SJS score")
-    st.table(
+    st.dataframe(
         data \
             .loc[data['opponent'] == option] \
-            .sort_values('sjs_score', ascending=False).head(5)
+            .sort_values('sjs_score', ascending=False).head(5),
+        hide_index=True
     )
 
     st.header("Top 5 games by opponent score")
-    st.table(
+    st.dataframe(
         data \
             .loc[data['opponent'] == option] \
-            .sort_values('opponent_score', ascending=False).head(5)
+            .sort_values('opponent_score', ascending=False).head(5),
+        hide_index=True
     )

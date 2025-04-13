@@ -1,6 +1,10 @@
+import numpy as np
 import requests
 from datetime import timedelta, datetime
 import pandas as pd
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import OneHotEncoder
 
 start_year = 2010
 end_year = 2023
@@ -64,3 +68,28 @@ def fetch_data():
         'current_streak',
         'is_b2b'
     ])
+
+def train(game_data):
+    X = game_data.drop(['id', 'sjs_score', 'opponent_score'], axis=1)
+    y = game_data[['sjs_score', 'opponent_score']]
+
+    encoder = OneHotEncoder(sparse_output=False, handle_unknown='ignore')
+    encoded_opponent = encoder.fit_transform(X[['opponent']])
+    encoded_opponent_df = pd.DataFrame(encoded_opponent, columns=encoder.get_feature_names_out(['opponent']))
+    X = pd.concat([X.drop('opponent', axis=1), encoded_opponent_df], axis=1)
+
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+    rf_model = RandomForestRegressor(max_features='sqrt')
+    rf_model.fit(X_train, y_train)
+
+    return rf_model, encoder
+
+def predict(is_home, current_streak, is_b2b, opponent, encoder, model):
+    opponent_encoded = encoder.transform([[opponent]])
+    input_data = np.concatenate(([is_home, current_streak, is_b2b], opponent_encoded[0]))
+    input_data = input_data.reshape(1, -1)
+
+    predicted = model.predict(input_data)[0]
+    print(predicted)
+    return round(predicted[0]), round(predicted[1])
